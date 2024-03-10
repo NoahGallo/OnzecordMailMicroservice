@@ -1,3 +1,4 @@
+from flask import Flask, request, jsonify
 import os
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -6,15 +7,20 @@ from googleapiclient.discovery import build
 import base64
 from email.mime.text import MIMEText
 
+# Initialize Flask app
+app = Flask(__name__)
+
 # Define the scope for accessing Gmail API
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 
 def get_credentials():
     creds = None
     # Check if the token.json file exists
-    if os.path.exists('token.json'):
+    current_dir = os.path.dirname(os.path.realpath(__file__))
+    token_file_path = os.path.join(current_dir, 'token.json')
+    if os.path.exists(token_file_path):
         # Load credentials from the token.json file
-        creds = Credentials.from_authorized_user_file('token.json')
+        creds = Credentials.from_authorized_user_file(token_file_path)
     # If credentials are missing or invalid
     if not creds or not creds.valid:
         # If credentials are expired and can be refreshed
@@ -22,8 +28,6 @@ def get_credentials():
             # Refresh the credentials
             creds.refresh(Request())
         else:
-            # Get the path of the current directory
-            current_dir = os.path.dirname(os.path.realpath(__file__))
             # Path to the credentials file
             credentials_file = os.path.join(current_dir, 'credentials.json')
             # Create a flow to obtain new credentials using the credentials file and defined scopes
@@ -31,7 +35,7 @@ def get_credentials():
             # Run the flow to obtain new credentials via local server authentication
             creds = flow.run_local_server(port=0)
         # Save the refreshed or new credentials to token.json
-        with open('token.json', 'w') as token:
+        with open(token_file_path, 'w') as token:
             token.write(creds.to_json())
     return creds
 
@@ -60,23 +64,30 @@ def send_message(service, user_id, message):
         # Send the email message using the Gmail API and obtain the message ID
         message = service.users().messages().send(userId=user_id, body=message).execute()
         # Print the message ID indicating successful email delivery
-        print('Message Id: %s' % message['id'])
         return True
     except Exception as e:
         # Print any errors that occur during the email sending process
         print('An error occurred: %s' % e)
         return False
 
-if __name__ == '__main__':
-    # Define email parameters
-    sender = 'onzecordmail@gmail.com'
-    to = 'gallo.noah@gmail.com'
-    subject = 'Test Email'
-    message = 'This is a test email sent using OAuth2 authentication with Gmail API.'
+@app.route('/send_email', methods=['POST'])
+def send_email_api():
+    # Extract email parameters from request
+    sender = request.json.get('sender')
+    to = request.json.get('to')
+    subject = request.json.get('subject')
+    message = request.json.get('message')
+
+    # Log the received data
+    app.logger.info('Received request: sender=%s, to=%s, subject=%s, message=%s', sender, to, subject, message)
+    
     # Send the email and check if it was successful
     success = send_email(sender, to, subject, message)
-    # Print success or failure message based on email sending status
-    if success:
-        print("Email sent successfully!")
-    else:
-        print("Failed to send email.")
+    
+    # Prepare response
+    response = {'success': success}
+    
+    return jsonify(response)
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')  # Run the Flask app in debug mode, listening on all network interfaces
