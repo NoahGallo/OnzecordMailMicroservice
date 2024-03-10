@@ -5,19 +5,19 @@ steps:
 
   # Docker push to Google Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push',  'europe-west3-docker.pkg.dev/onzecord-416813/onzecord-repo/onzecord-mail:${SHORT_SHA}']
+    args: ['push', 'europe-west3-docker.pkg.dev/onzecord-416813/onzecord-repo/onzecord-mail:${SHORT_SHA}']
 
-# Store images in Google Artifact Registry 
+# Deploy to Cloud Run
+- name: 'gcr.io/cloud-builders/gcloud'
+  args:
+    - 'run'
+    - 'deploy'
+    - 'onzecord-mail'
+    - '--image=europe-west3-docker.pkg.dev/onzecord-416813/onzecord-repo/onzecord-mail:${SHORT_SHA}'
+    - '--platform=managed'
+    - '--region=europe-west3'
+    - '--allow-unauthenticated' # Allow unauthenticated access
+
+# Store images in Google Artifact Registry
 images:
-  - europe-west3-docker.pkg.dev/onzecord-416813/onzecord-repo/onzecord-mail:${SHORT_SHA}
-
-  # Deploy to Cloud Run
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args:
-      - 'run'
-      - 'deploy'
-      - 'onzecord-mail'
-      - '--image=europe-west3-docker.pkg.dev/onzecord-416813/onzecord-repo/onzecord-mail:${SHORT_SHA}'
-      - '--platform=managed'
-      - '--region=europe-west3'
-      - '--allow-unauthenticated' # Allow unauthenticated access
+  - 'europe-west3-docker.pkg.dev/onzecord-416813/onzecord-repo/onzecord-mail:${SHORT_SHA}'
