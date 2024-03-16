@@ -90,4 +90,4 @@ def send_email_api():
     return jsonify(response)
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')  # Run the Flask app in debug mode, listening on all network interfaces
+    app.run(debug=True, host='0.0.0.0', port=5000)  # Run the Flask app in debug mode, listening on all network interfaces
