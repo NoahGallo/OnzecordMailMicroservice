@@ -17,6 +17,7 @@ steps:
       - '--platform=managed'
       - '--region=europe-west3'
       - '--allow-unauthenticated' # Allow unauthenticated access
+      - '--port=5000' # Specify the container port
 
 # Store images in Google Artifact Registry
 images:
