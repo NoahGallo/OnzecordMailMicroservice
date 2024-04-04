@@ -7,14 +7,14 @@
 </head>
 <body>
     <h1>Send Email</h1>
-    <p>This is a simple page to test the sending of emails over the API, normally the API is used over POST over the endpoint /send_email</p>
-    <form action="/send_email" method="post">
+    <p>This is a simple page to test the sending of emails over the API, normally the API is used with POST over the endpoint /send_email</p>
+    <form action="/send_email" method="post" enctype="application/json">
         <label for="to">Recipient's Email:</label><br>
-        <input type="email" id="to" name="to" required><br>
+        <input type="email" id="to" name="to"><br>
         <label for="subject">Subject:</label><br>
-        <input type="text" id="subject" name="subject" required><br>
+        <input type="text" id="subject" name="subject"><br>
         <label for="message">Message:</label><br>
-        <textarea id="message" name="message" rows="4" cols="50" required></textarea><br>
+        <textarea id="message" name="message" rows="4" cols="50"></textarea><br>
         <input type="submit" value="Send Email">
     </form>
 </body>

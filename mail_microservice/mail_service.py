@@ -70,7 +70,7 @@ def send_message(service, user_id, message):
         print('An error occurred: %s' % e)
         return False
     
-# New route to handle browser requests for the landing page
+# New route to handle browser requests for the index.html landing page
 @app.route('/')
 def index():
     return render_template('index.html')
