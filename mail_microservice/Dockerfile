@@ -16,5 +16,5 @@ COPY . .
 # Expose the port on which the Python Flask app will run
 EXPOSE 5000
 
-# Command to run the Flask application
+# Command to run the Python Flask application
 CMD ["python", "mail_service.py"]
