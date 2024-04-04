@@ -24,7 +24,7 @@ jobs:
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: 'onzecord-mail'
-          image: 'europe-west3-docker.pkg.dev/onzecord-416813/onzecord-repo/onzecord-mail:${SHORT_SHA}'
+          image: 'europe-west3-docker.pkg.dev/onzecord-416813/onzecord-repo/onzecord-mail:latest'
           project_id: ${{ secrets.GCP_PROJECT }}
           region: 'europe-west3'
 
