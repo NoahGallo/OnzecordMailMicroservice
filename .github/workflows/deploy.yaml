@@ -27,6 +27,7 @@ jobs:
           image: 'europe-west3-docker.pkg.dev/onzecord-416813/onzecord-repo/onzecord-mail:latest'
           project_id: ${{ secrets.GCP_PROJECT }}
           region: 'europe-west3'
+          flags: '--port=5000 --allow-unauthenticated'
 
       - name: Use output
         run: |
