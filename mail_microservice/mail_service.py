@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import os
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -39,22 +39,22 @@ def get_credentials():
             token.write(creds.to_json())
     return creds
 
-def send_email(sender, to, subject, message):
+def send_email(to, subject, message):
     # Get credentials
     creds = get_credentials()
     # Build the Gmail service
     service = build('gmail', 'v1', credentials=creds)
     # Create a raw email message
-    raw_message = create_message(sender, to, subject, message)
+    raw_message = create_message(to, subject, message)
     # Send the email message and return whether it was successful
     return send_message(service, 'me', raw_message)
 
-def create_message(sender, to, subject, message_text):
+def create_message(to, subject, message_text):
     # Create a MIMEText object for the email message
     message = MIMEText(message_text)
     # Set the 'to', 'from', and 'subject' headers of the email message
     message['to'] = to
-    message['from'] = sender
+    message['from'] = 'onzecordmail@gmail.com'  # Hardcoded sender email address
     message['subject'] = subject
     # Encode the message as a raw string and return it
     return {'raw': base64.urlsafe_b64encode(message.as_bytes()).decode()}
@@ -69,20 +69,24 @@ def send_message(service, user_id, message):
         # Print any errors that occur during the email sending process
         print('An error occurred: %s' % e)
         return False
+    
+# New route to handle browser requests for the landing page
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 @app.route('/send_email', methods=['POST'])
 def send_email_api():
     # Extract email parameters from request
-    sender = request.json.get('sender')
     to = request.json.get('to')
     subject = request.json.get('subject')
     message = request.json.get('message')
 
     # Log the received data
-    app.logger.info('Received request: sender=%s, to=%s, subject=%s, message=%s', sender, to, subject, message)
+    app.logger.info('Received request: to=%s, subject=%s, message=%s', to, subject, message)
     
     # Send the email and check if it was successful
-    success = send_email(sender, to, subject, message)
+    success = send_email(to, subject, message)
     
     # Prepare response
     response = {'success': success}
