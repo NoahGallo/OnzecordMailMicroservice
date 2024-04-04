@@ -1,4 +1,5 @@
- # Deploy to Cloud Run
+# Deploy to Cloud Run
+steps:
   - name: 'gcr.io/cloud-builders/gcloud'
     args:
       - 'run'
@@ -7,5 +8,5 @@
       - '--image=europe-west3-docker.pkg.dev/onzecord-416813/onzecord-repo/onzecord-mail:latest'
       - '--platform=managed'
       - '--region=europe-west3'
-      - '--allow-unauthenticated' # Allow unauthenticated access
+      - '--allow-unauthenticated' # Allow unauthenticated access to everyone
       - '--port=5000' # Specify the container port
