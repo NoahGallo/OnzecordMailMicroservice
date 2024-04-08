@@ -2,3 +2,4 @@ Flask==3.0.2
 google_api_python_client==2.121.0
 google_auth_oauthlib==1.2.0
 protobuf==4.25.3
+flask-swagger-ui==4.11.1
