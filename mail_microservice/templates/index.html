@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Send Email</title>
 </head>
 <body>
@@ -19,6 +20,7 @@
         <textarea id="message" name="message" rows="4" cols="50"></textarea><br>
         <input type="submit" value="Send Email">
     </form>
+    <div id="messageContainer"></div>
 
     <script>
         function submitForm(event) {
@@ -43,11 +45,20 @@
             .then(response => response.json())
             .then(data => {
                 // Handle response
-                console.log(data);
+                const messageContainer = document.getElementById('messageContainer');
+                if (data.success) {
+                    messageContainer.textContent = 'Email sent successfully.';
+                } else {
+                    messageContainer.textContent = 'Failed to send email. Please try again later.';
+                }
+                // Clear form fields
+                form.reset();
             })
             .catch(error => {
                 // Handle error
                 console.error('Error:', error);
+                const messageContainer = document.getElementById('messageContainer');
+                messageContainer.textContent = 'An error occurred. Please try again later.';
             });
         }
     </script>
