@@ -6,9 +6,25 @@ from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 import base64
 from email.mime.text import MIMEText
+from flask_swagger_ui import get_swaggerui_blueprint
 
 # Initialize Flask app
 app = Flask(__name__)
+
+#Swagger
+
+SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
+API_URL = '/static/swagger.json'
+
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,  # Swagger UI static files will be mapped to '{SWAGGER_URL}/dist/'
+    API_URL,
+    config={  # Swagger UI config overrides
+        'app_name': "Test application"
+    },
+)
+
+app.register_blueprint(swaggerui_blueprint)
 
 # Define the scope for accessing Gmail API
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']

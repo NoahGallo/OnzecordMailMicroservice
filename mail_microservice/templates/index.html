@@ -9,7 +9,8 @@
     <h1>Send Email</h1>
     <h2>Onzecord</h2>
     <p>This is a simple page to test the sending of emails over the API, normally the API is used with POST over the endpoint /send_email</p>
-    <form action="/send_email" method="post" enctype="application/json">
+    <p>Swagger is available at /api/docs</p>
+    <form id="emailForm" onsubmit="submitForm(event)">
         <label for="to">Recipient's Email:</label><br>
         <input type="email" id="to" name="to"><br>
         <label for="subject">Subject:</label><br>
@@ -18,5 +19,37 @@
         <textarea id="message" name="message" rows="4" cols="50"></textarea><br>
         <input type="submit" value="Send Email">
     </form>
+
+    <script>
+        function submitForm(event) {
+            event.preventDefault(); // Prevent default form submission
+            const form = document.getElementById('emailForm');
+            const formData = new FormData(form);
+            const jsonObject = {};
+
+            // Convert form data to JSON object
+            formData.forEach((value, key) => {
+                jsonObject[key] = value;
+            });
+
+            // Send JSON data using fetch
+            fetch('/send_email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonObject)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle response
+                console.log(data);
+            })
+            .catch(error => {
+                // Handle error
+                console.error('Error:', error);
+            });
+        }
+    </script>
 </body>
 </html>
