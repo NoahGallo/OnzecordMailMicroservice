@@ -49,7 +49,6 @@ To deploy the microservice to Google Cloud Run, follow these steps:
 ### Sending an Email
 Send a POST request to the /send_email endpoint with the following parameters:
 
-- sender: Email address of the sender
 - to: Email address of the recipient
 - subject: Subject of the email
 - message: Body of the email
@@ -59,7 +58,6 @@ Example using Python:
   import requests
   url = 'https://onzecord-mail-ynl52tk6za-ey.a.run.app/send_email'
   data = {
-    'sender': 'your-email@gmail.com',
     'to': 'recipient@example.com',
     'subject': 'Test Email',
     'message': 'This is a test email.'
@@ -72,7 +70,6 @@ Example using Node.js:
   const axios = require('axios');
 
   const data = {
-    sender: 'your-email@gmail.com',
     to: 'recipient@example.com',
     subject: 'Test Email',
     message: 'This is a test email.'
@@ -86,7 +83,6 @@ Example using Node.js:
 Example using PHP:
   ```php
   $data = [
-    'sender' => 'your-email@gmail.com',
     'to' => 'recipient@example.com',
     'subject' => 'Test Email',
     'message' => 'This is a test email.'
