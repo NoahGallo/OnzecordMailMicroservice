@@ -21,7 +21,9 @@ jobs:
         export_default_credentials: true
 
     - name: Authenticate gcloud CLI
-      run: echo "${{ secrets.GCR_JSON_KEY }}" | gcloud auth activate-service-account --key-file=-
+      run: |
+        echo '${{ secrets.GCR_JSON_KEY }}' > key.json
+        gcloud auth activate-service-account --key-file=key.json
 
     - name: Deploy to Google Cloud Run
       run: |
