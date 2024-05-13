@@ -21,6 +21,7 @@ jobs:
 
     - name: Run unit tests
       run: |
+        cd mail_microservice
         python -m unittest discover
 
   build-and-push:
