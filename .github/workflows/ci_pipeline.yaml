@@ -17,7 +17,8 @@ jobs:
         python-version: '3.9'
     - name: Install dependencies
       run: |
-        pip install --no-cache-dir -r requirements.txt
+        pip install --no-cache-dir -r mail_microservice/requirements.txt
+
     - name: Run unit tests
       run: |
         python -m unittest discover
