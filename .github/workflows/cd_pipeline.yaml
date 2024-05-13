@@ -11,10 +11,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4.1.5
 
     - name: Setup Google Cloud SDK
-      uses: google-github-actions/setup-gcloud@master
+      uses: google-github-actions/setup-gcloud@v2.1.0
       with:
         project_id: onzecord-416813
         service_account_key: ${{ secrets.GCR_JSON_KEY }}
