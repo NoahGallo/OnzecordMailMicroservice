@@ -56,10 +56,13 @@ jobs:
       uses: docker/setup-buildx-action@v3.3.0
 
     - name: Login to Google Container Registry
-      run: |
-        echo "${{ secrets.GCR_JSON_KEY }}" | docker login -u _json_key --password-stdin europe-west3-docker.pkg.dev
+      uses: docker/login-action@v3.1.0
+      with:
+        registry: europe-west3-docker.pkg.dev/onzecord-416813/onzecord-repo
+        username: _json_key
+        password: ${{ secrets.GCR_JSON_KEY }}
 
-    - name: Start flask service container
+    - name: Pull and run flask service container
       run: |
         docker pull europe-west3-docker.pkg.dev/onzecord-416813/onzecord-repo/onzecord-mail:latest
         docker run -d --name flask -p 5000:5000 europe-west3-docker.pkg.dev/onzecord-416813/onzecord-repo/onzecord-mail:latest
