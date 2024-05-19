@@ -87,4 +87,4 @@ jobs:
       run: npm install -g testcafe
 
     - name: Run TestCafe tests
-      run: testcafe chrome test_frontend.js
+      run: testcafe chrome:headless test_frontend.js
