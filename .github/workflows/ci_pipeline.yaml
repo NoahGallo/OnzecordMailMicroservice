@@ -44,3 +44,31 @@ jobs:
         context: mail_microservice
         push: true
         tags: europe-west3-docker.pkg.dev/onzecord-416813/onzecord-repo/onzecord-mail:latest
+
+  e2e-tests:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    services:
+      flask:
+        image: europe-west3-docker.pkg.dev/onzecord-416813/onzecord-repo/onzecord-mail:latest
+        ports:
+          - 5000:5000
+        options: >-
+          --health-cmd="curl --fail http://localhost:5000 || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4.1.5
+
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    - name: Install TestCafe
+      run: npm install -g testcafe
+
+    - name: Run TestCafe tests
+      run: testcafe chrome test_frontend.js
