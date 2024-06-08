@@ -11,7 +11,7 @@ from flask_swagger_ui import get_swaggerui_blueprint
 # Initialize Flask app
 app = Flask(__name__)
 
-#Swagger
+#Swagger section
 
 SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
 API_URL = '/static/swagger.json'
