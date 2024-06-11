@@ -2,6 +2,10 @@
 
 This is a microservice built using Flask for sending emails via Gmail API. It provides a RESTful API endpoint `/send_email` to send emails programmatically. The microservice is containerized using Docker and can be deployed to Google Cloud Run.
 
+## CI/CD Pipeline Diagram
+
+![ci/cd pipeline diagram](./images/ci_cd.png)
+
 ## Prerequisites
 
 Before running the microservice, ensure you have the following installed:
@@ -99,3 +103,8 @@ curl_close($ch);
 
 echo $response;
   ```
+## Acknowledgements
+
+Special thanks to Pascal Rohart for utilizing this microservice in his project, Reminder-Manager.
+Check out his project:  
+[https://github.com/Insset-G2/reminder-manager](https://github.com/Insset-G2/reminder-manager)
