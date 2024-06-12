@@ -1,0 +1,30 @@
+name: CD Pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4.1.5
+
+    - name: Setup Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v2.1.0
+      with:
+        project_id: onzecord-416813
+        service_account_key: ${{ secrets.GCR_JSON_KEY }}
+        export_default_credentials: true
+
+    - name: Authenticate gcloud CLI
+      run: |
+        echo '${{ secrets.GCR_JSON_KEY }}' > key.json
+        gcloud auth activate-service-account --key-file=key.json
+
+    - name: Deploy to Google Cloud Run
+      run: |
+        gcloud run deploy onzecord-mail --image=europe-west3-docker.pkg.dev/onzecord-416813/onzecord-repo/onzecord-mail:latest --platform=managed --region=europe-west3 --allow-unauthenticated --port=5000
